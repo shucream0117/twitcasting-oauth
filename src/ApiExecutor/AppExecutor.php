@@ -3,7 +3,7 @@
 namespace Shucream0117\TwitCastingOAuth\ApiExecutor;
 
 use GuzzleHttp\Client;
-use Shucream0117\TwitCastingOAuth\Config;
+use Shucream0117\TwitCastingOAuth\Utils\Config;
 use Shucream0117\TwitCastingOAuth\Constants\StatusCode;
 use Shucream0117\TwitCastingOAuth\Entities\AccessToken;
 use Shucream0117\TwitCastingOAuth\GrantFlow\AuthCodeGrant;
@@ -16,10 +16,10 @@ class AppExecutor extends ApiExecutorBase
     protected $clientSecret;
 
     /**
-     * @param Client $client
      * @param Config $config
+     * @param Client|null $client
      */
-    public function __construct(Client $client, Config $config)
+    public function __construct(Config $config, ?Client $client = null)
     {
         parent::__construct($client);
         $this->clientId = $config->get('client_id');
@@ -49,13 +49,13 @@ class AppExecutor extends ApiExecutorBase
             ],
         ]);
         if ($response->getStatusCode() !== StatusCode::OK) {
-            $this->throwExceptionByStatusCode($response->getStatusCode(), $response);
+            $this->throwExceptionByStatusCode($response);
             exit;
         }
         if (!$body = $response->getBody()->getContents()) {
             throw new \Exception("response body is empty");
         }
-        if (!$json = json_decode($response->getBody()->getContents(), true)) {
+        if (!$json = json_decode($body, true)) {
             throw new \Exception("failed to parse response body");
         }
         if (empty($json['access_token']) || empty($json['expires_in'])) {
