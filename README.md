@@ -1,6 +1,7 @@
 # TwitCastingOAuth
 
 for [TwitCasting API v2](http://twitcasting.tv/indexapiv2.php)
+official document => http://apiv2-doc.twitcasting.tv/
 
 ## Requirement
 
@@ -10,7 +11,7 @@ for [TwitCasting API v2](http://twitcasting.tv/indexapiv2.php)
 via composer.
 
 ```console
-$ php composer.phar require shucream0117/twitcasting-oauth
+$ php composer.phar require shucream0117/twitcasting-oauth:dev-master
 ```
 
 ## Usage
@@ -64,6 +65,16 @@ $config = new Config('path-to-your-config-dir/config.php');
 $executor = new AppExecutor($config);
 $response = $executor->get("users/twitcasting_jp");
 $userInfo = json_decode($response->getBody()->getContents(), true);
+```
+
+#### More examples
+
+https://github.com/shucream0117/twitcasting-oauth-example
+
+## Testing
+
+```console
+$ vendor/bin/phpunit --bootstrap tests/bootstrap.php tests/
 ```
 
 ## License
