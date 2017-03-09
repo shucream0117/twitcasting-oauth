@@ -11,6 +11,7 @@ official document => http://apiv2-doc.twitcasting.tv/
 via composer.
 
 ```console
+$ curl -sS https://getcomposer.org/installer | php
 $ php composer.phar require shucream0117/twitcasting-oauth:dev-master
 ```
 
