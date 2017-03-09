@@ -1,10 +1,7 @@
 {
   "name": "shucream0117/twitcasting-oauth",
-  "description": "OAuth library of TwitCasting",
-  "keywords": [
-    "oauth",
-    "twitcasting"
-  ],
+  "description": "OAuth library for TwitCastingAPIv2",
+  "keywords": ["oauth", "twitcasting"],
   "type": "library",
   "license": "MIT",
   "authors": [

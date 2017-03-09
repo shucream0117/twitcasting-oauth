@@ -3,7 +3,7 @@
 namespace Shucream0117\TwitCastingOAuth\GrantFlow;
 
 use Shucream0117\TwitCastingOAuth\ApiExecutor\AppExecutor;
-use Shucream0117\TwitCastingOAuth\Config;
+use Shucream0117\TwitCastingOAuth\Utils\Config;
 use Shucream0117\TwitCastingOAuth\Constants\Url;
 use Shucream0117\TwitCastingOAuth\Entities\AccessToken;
 
