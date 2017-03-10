@@ -32,11 +32,15 @@ abstract class ApiExecutorBase
 
     abstract protected function getRequestHeaderParams(): array;
 
+    /**
+     * @return array
+     */
     protected function getCommonHeaderParams(): array
     {
         return [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
+            'Accept-Encoding' => 'gzip',
             'X-Api-Version' => static::API_VERSION,
         ];
     }
