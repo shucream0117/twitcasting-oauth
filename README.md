@@ -21,8 +21,8 @@ $ php composer.phar require shucream0117/twitcasting-oauth:dev-master
 ### Setup Config File
 
 ```console
-$ cp vendor/shucream0117/twitcasting-oauth/config/config.template path-to-your-config-dir/config.php
-$ vi path-to-your-config-dir/config.php # put your ClientID and ClientSecret !!
+$ cp vendor/shucream0117/twitcasting-oauth/config/config.template.php path-to-your-config-dir/config.php
+$ vi path-to-your-config-dir/config.php # put your ClientID, ClientSecret and CallbackURL !!
 ```
 
 ### Examples
@@ -40,8 +40,9 @@ $url = (new AuthCodeGrant($config))->getConfirmPageUrl($csrfToken);
 ```php
 // handle callback request
 $config = new Config('path-to-your-config-dir/config.php');
-$state = $_GET['state'] ?? null;
-$code = $_GET['code'] ?? null;
+// $state should be same as CSRF token you set to AuthCodeGrant::getConfirmPageUrl()
+$state = $_GET['state'] ?? null; 
+$code = $_GET['code'] ?? null; // handle error if $code is null
 $accessToken = $grant->requestAccessToken($code, new AppExecutor($config));
 ```
 
