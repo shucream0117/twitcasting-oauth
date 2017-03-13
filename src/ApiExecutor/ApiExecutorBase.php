@@ -3,6 +3,7 @@
 namespace Shucream0117\TwitCastingOAuth\ApiExecutor;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Shucream0117\TwitCastingOAuth\Constants\StatusCode;
 use Shucream0117\TwitCastingOAuth\Constants\Url;
@@ -60,18 +61,22 @@ abstract class ApiExecutorBase
      */
     public function post(string $apiPath, array $params = [], array $additionalHeaders = []): ResponseInterface
     {
-        $response = $this->client->post(
-            $this->getFullUrl($apiPath), [
-            'headers' => array_merge(
-                $this->getCommonHeaderParams(), $this->getRequestHeaderParams(), $additionalHeaders
-            ),
-            'json' => $params,
-        ]);
-        $statusCode = $response->getStatusCode();
-        if ($statusCode < StatusCode::BAD_REQUEST) {
-            return $response;
+        try {
+            $response = $this->client->post(
+                $this->getFullUrl($apiPath), [
+                'headers' => array_merge(
+                    $this->getCommonHeaderParams(), $this->getRequestHeaderParams(), $additionalHeaders
+                ),
+                'json' => $params,
+            ]);
+            $statusCode = $response->getStatusCode();
+            if ($statusCode < StatusCode::BAD_REQUEST) {
+                return $response;
+            }
+            $this->throwExceptionByStatusCode($response);
+        } catch (RequestException $e) {
+            $this->throwExceptionByStatusCode($e->getResponse());
         }
-        $this->throwExceptionByStatusCode($response);
     }
 
     /**
@@ -89,19 +94,23 @@ abstract class ApiExecutorBase
      */
     public function get(string $apiPath, array $params = [], array $additionalHeaders = []): ResponseInterface
     {
-        $queryString = http_build_query($params);
-        $url = "{$this->getFullUrl($apiPath)}?{$queryString}";
-        $response = $this->client->get(
-            $url, [
-            'headers' => array_merge(
-                $this->getCommonHeaderParams(), $this->getRequestHeaderParams(), $additionalHeaders
-            ),
-        ]);
-        $statusCode = $response->getStatusCode();
-        if ($statusCode < StatusCode::BAD_REQUEST) {
-            return $response;
+        try {
+            $queryString = http_build_query($params);
+            $url = "{$this->getFullUrl($apiPath)}?{$queryString}";
+            $response = $this->client->get(
+                $url, [
+                'headers' => array_merge(
+                    $this->getCommonHeaderParams(), $this->getRequestHeaderParams(), $additionalHeaders
+                ),
+            ]);
+            $statusCode = $response->getStatusCode();
+            if ($statusCode < StatusCode::BAD_REQUEST) {
+                return $response;
+            }
+            $this->throwExceptionByStatusCode($response);
+        } catch (RequestException $e) {
+            $this->throwExceptionByStatusCode($e->getResponse());
         }
-        $this->throwExceptionByStatusCode($response);
     }
 
     /**
@@ -119,18 +128,22 @@ abstract class ApiExecutorBase
      */
     public function put(string $apiPath, array $params = [], array $additionalHeaders = []): ResponseInterface
     {
-        $response = $this->client->put(
-            $this->getFullUrl($apiPath), [
-            'headers' => array_merge(
-                $this->getCommonHeaderParams(), $this->getRequestHeaderParams(), $additionalHeaders
-            ),
-            'json' => $params,
-        ]);
-        $statusCode = $response->getStatusCode();
-        if ($statusCode < StatusCode::BAD_REQUEST) {
-            return $response;
+        try {
+            $response = $this->client->put(
+                $this->getFullUrl($apiPath), [
+                'headers' => array_merge(
+                    $this->getCommonHeaderParams(), $this->getRequestHeaderParams(), $additionalHeaders
+                ),
+                'json' => $params,
+            ]);
+            $statusCode = $response->getStatusCode();
+            if ($statusCode < StatusCode::BAD_REQUEST) {
+                return $response;
+            }
+            $this->throwExceptionByStatusCode($response);
+        } catch (RequestException $e) {
+            $this->throwExceptionByStatusCode($e->getResponse());
         }
-        $this->throwExceptionByStatusCode($response);
     }
 
     /**
@@ -148,19 +161,23 @@ abstract class ApiExecutorBase
      */
     public function delete(string $apiPath, array $params = [], array $additionalHeaders = []): ResponseInterface
     {
-        $queryString = http_build_query($params);
-        $url = "{$this->getFullUrl($apiPath)}?{$queryString}";
-        $response = $this->client->delete(
-            $url, [
-            'headers' => array_merge(
-                $this->getCommonHeaderParams(), $this->getRequestHeaderParams(), $additionalHeaders
-            ),
-        ]);
-        $statusCode = $response->getStatusCode();
-        if ($statusCode < StatusCode::BAD_REQUEST) {
-            return $response;
+        try {
+            $queryString = http_build_query($params);
+            $url = "{$this->getFullUrl($apiPath)}?{$queryString}";
+            $response = $this->client->delete(
+                $url, [
+                'headers' => array_merge(
+                    $this->getCommonHeaderParams(), $this->getRequestHeaderParams(), $additionalHeaders
+                ),
+            ]);
+            $statusCode = $response->getStatusCode();
+            if ($statusCode < StatusCode::BAD_REQUEST) {
+                return $response;
+            }
+            $this->throwExceptionByStatusCode($response);
+        } catch (RequestException $e) {
+            $this->throwExceptionByStatusCode($e->getResponse());
         }
-        $this->throwExceptionByStatusCode($response);
     }
 
     /**
