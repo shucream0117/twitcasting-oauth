@@ -12,6 +12,7 @@ use Shucream0117\TwitCastingOAuth\Exceptions\ForbiddenException;
 use Shucream0117\TwitCastingOAuth\Exceptions\InternalServerErrorException;
 use Shucream0117\TwitCastingOAuth\Exceptions\NotFoundException;
 use Shucream0117\TwitCastingOAuth\Exceptions\ServiceUnAvailableException;
+use Shucream0117\TwitCastingOAuth\Exceptions\UnauthorizedException;
 
 abstract class ApiExecutorBase
 {
@@ -192,12 +193,12 @@ abstract class ApiExecutorBase
     /**
      * @param ResponseInterface $response
      * @return void
-     *
      * @throws BadRequestException
      * @throws ForbiddenException
      * @throws InternalServerErrorException
      * @throws NotFoundException
      * @throws ServiceUnAvailableException
+     * @throws UnauthorizedException
      */
     protected function throwExceptionByStatusCode(ResponseInterface $response): void
     {
@@ -209,6 +210,9 @@ abstract class ApiExecutorBase
         $errorResponseString = $response->getBody()->getContents();
         if ($statusCode === StatusCode::BAD_REQUEST) {
             throw new BadRequestException($errorResponseString);
+        }
+        if ($statusCode === StatusCode::UNAUTHORIZED) {
+            throw new UnauthorizedException($errorResponseString);
         }
         if ($statusCode === StatusCode::FORBIDDEN) {
             throw new ForbiddenException($errorResponseString);
