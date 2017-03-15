@@ -3,6 +3,8 @@
 namespace Shucream0117\TwitCastingOAuth\ApiExecutor;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use Shucream0117\TwitCastingOAuth\Exceptions\UnauthorizedException;
 use Shucream0117\TwitCastingOAuth\Utils\Config;
 use Shucream0117\TwitCastingOAuth\Constants\StatusCode;
 use Shucream0117\TwitCastingOAuth\Entities\AccessToken;
@@ -31,23 +33,29 @@ class AppExecutor extends ApiExecutorBase
      * @param string $code
      * @param AuthCodeGrant $codeGrant
      * @return AccessToken
+     * @throws UnauthorizedException
      * @throws \Exception
      */
     public function requestAccessToken(string $code, AuthCodeGrant $codeGrant): AccessToken
     {
-        $response = $this->client->post($this->getFullUrl('oauth2/access_token'), [
-            'headers' => [
-                'Content-Type' => 'application/x-www-form-urlencoded',
-                'Accept' => 'application/json',
-            ],
-            'form_params' => [
-                'code' => $code,
-                'grant_type' => 'authorization_code',
-                'client_id' => $codeGrant->getClientId(),
-                'client_secret' => $codeGrant->getClientSecret(),
-                'redirect_uri' => $codeGrant->getCallbackUrl(),
-            ],
-        ]);
+        try {
+            $response = $this->client->post($this->getFullUrl('oauth2/access_token'), [
+                'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
+                    'Accept' => 'application/json',
+                ],
+                'form_params' => [
+                    'code' => $code,
+                    'grant_type' => 'authorization_code',
+                    'client_id' => $codeGrant->getClientId(),
+                    'client_secret' => $codeGrant->getClientSecret(),
+                    'redirect_uri' => $codeGrant->getCallbackUrl(),
+                ],
+            ]);
+        } catch (RequestException $e) {
+            $this->throwExceptionByStatusCode($e->getResponse());
+            exit;
+        }
         if ($response->getStatusCode() !== StatusCode::OK) {
             $this->throwExceptionByStatusCode($response);
             exit;
