@@ -29,4 +29,12 @@ class UserExecutor extends ApiExecutorBase
             'Authorization' => "Bearer {$this->accessToken->getAccessToken()}",
         ]);
     }
+
+    /**
+     * @return AccessToken
+     */
+    public function getAccessToken(): AccessToken
+    {
+        return $this->accessToken;
+    }
 }
