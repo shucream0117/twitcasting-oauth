@@ -5,7 +5,6 @@ namespace Shucream0117\TwitCastingOAuth\ApiExecutor;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Shucream0117\TwitCastingOAuth\Exceptions\UnauthorizedException;
-use Shucream0117\TwitCastingOAuth\Utils\Config;
 use Shucream0117\TwitCastingOAuth\Constants\StatusCode;
 use Shucream0117\TwitCastingOAuth\Entities\AccessToken;
 use Shucream0117\TwitCastingOAuth\GrantFlow\AuthCodeGrant;
@@ -18,14 +17,16 @@ class AppExecutor extends ApiExecutorBase
     protected $clientSecret;
 
     /**
-     * @param Config $config
+     * @param string $clientId
+     * @param string $secret
      * @param Client|null $client
+     * @internal param Config $config
      */
-    public function __construct(Config $config, ?Client $client = null)
+    public function __construct(string $clientId, string $secret, ?Client $client = null)
     {
         parent::__construct($client);
-        $this->clientId = $config->get('client_id');
-        $this->clientSecret = $config->get('client_secret');
+        $this->clientId = $clientId;
+        $this->clientSecret = $secret;
     }
 
     /**
