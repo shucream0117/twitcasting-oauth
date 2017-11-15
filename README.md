@@ -18,32 +18,23 @@ $ php composer.phar require shucream0117/twitcasting-oauth:dev-master
 
 ## Usage
 
-### Setup Config File
-
-```console
-$ cp vendor/shucream0117/twitcasting-oauth/config/config.template.php path-to-your-config-dir/config.php
-$ vi path-to-your-config-dir/config.php # put your ClientID, ClientSecret and CallbackURL !!
-```
-
 ### Examples
 
 #### Get Confirmation Page Url
 
 ```php
-$config = new Config('path-to-your-config-dir/config.php');
-$csrfToken = 'hoge';
-$url = (new AuthCodeGrant($config))->getConfirmPageUrl($csrfToken);
+$csrfToken = 'csrf-token';
+$url = (new AuthCodeGrant('your-client-id', 'your-secret-key', 'your-callback-url))->getConfirmPageUrl($csrfToken);
 ```
 
 #### Get AccessToken
 
 ```php
 // handle callback request
-$config = new Config('path-to-your-config-dir/config.php');
-// $state should be same as CSRF token you set to AuthCodeGrant::getConfirmPageUrl()
-$state = $_GET['state'] ?? null; 
+
+$state = $_GET['state'] ?? null; // this should be same as CSRF token you set to AuthCodeGrant::getConfirmPageUrl() 
 $code = $_GET['code'] ?? null; // handle error if $code is null
-$accessToken = $grant->requestAccessToken($code, new AppExecutor($config));
+$accessToken = $grant->requestAccessToken($code, new AppExecutor('your-client-id', 'your-secret-key'));
 ```
 
 #### Request as an user
@@ -64,15 +55,11 @@ $response = $executor->post("movies/{$movieId}/comments", ['comment' => 'hello!!
 
 ```php
 // GET /users/twitcasting/jp
-$config = new Config('path-to-your-config-dir/config.php');
-$executor = new AppExecutor($config);
+
+$executor = new AppExecutor('your-client-id', 'your-secret-key');
 $response = $executor->get("users/twitcasting_jp");
 $userInfo = json_decode($response->getBody()->getContents(), true);
 ```
-
-#### More examples
-
-https://github.com/shucream0117/twitcasting-oauth-example
 
 ## Testing
 

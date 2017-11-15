@@ -3,7 +3,6 @@
 namespace Shucream0117\TwitCastingOAuth\GrantFlow;
 
 use Shucream0117\TwitCastingOAuth\ApiExecutor\AppExecutor;
-use Shucream0117\TwitCastingOAuth\Utils\Config;
 use Shucream0117\TwitCastingOAuth\Constants\Url;
 use Shucream0117\TwitCastingOAuth\Entities\AccessToken;
 
@@ -34,13 +33,15 @@ class AuthCodeGrant extends GrantBase implements AuthorizeFlowInterface
     }
 
     /**
-     * @param Config $config
+     * @param string $clientId
+     * @param string $secret
+     * @param string $callbackUrl
      */
-    public function __construct(Config $config)
+    public function __construct(string $clientId, string $secret, string $callbackUrl)
     {
-        $this->clientId = $config->get('client_id');
-        $this->clientSecret = $config->get('client_secret');
-        $this->callbackUrl = $config->get('callback_url');
+        $this->clientId = $clientId;
+        $this->clientSecret = $secret;
+        $this->callbackUrl = $callbackUrl;
     }
 
     /**
