@@ -24,7 +24,7 @@ $ php composer.phar require shucream0117/twitcasting-oauth:dev-master
 
 ```php
 $csrfToken = 'csrf-token';
-$url = (new AuthCodeGrant('your-client-id', 'your-secret-key', 'your-callback-url))->getConfirmPageUrl($csrfToken);
+$url = (new AuthCodeGrant('your-client-id', 'your-secret-key', 'your-callback-url'))->getConfirmPageUrl($csrfToken);
 ```
 
 #### Get AccessToken
